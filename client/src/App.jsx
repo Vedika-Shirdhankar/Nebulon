@@ -12,6 +12,7 @@ import BatchMonitor from "./pages/admin/BatchMonitor";
 import ZoneManager from "./pages/admin/ZoneManager";
 import WeeklyReport from "./pages/admin/WeeklyReport";
 import SettingsPage from "./pages/admin/Settings"; 
+import SegregationCheck from "./pages/citizen/SegregationCheck";
 function App() {
   return (
     <div className="bg-gray-950 min-h-screen text-white">
@@ -32,6 +33,7 @@ function App() {
         <Route path="/zone-manager" element={<ZoneManager />} />
         <Route path="/weekly-report" element={<WeeklyReport />} />
         <Route path="/settings" element={<SettingsPage />} /> 
+        <Route path="/segregation-check" element={<SegregationCheck />} />
       </Routes>
 
     </div>
