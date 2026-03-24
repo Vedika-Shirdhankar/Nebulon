@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import AdminDashboard from "./admin/AdminDashboard";
 // --- REUSABLE SUB-COMPONENTS ---
-
+import { useNavigate } from "react-router-dom";
 const Badge = ({ text, type = "default", showPulse = false }) => {
   const styles = {
     default: "bg-gray-800/50 border-gray-700 text-gray-300",
@@ -35,6 +35,7 @@ const StatCard = ({ title, value }) => (
 const Landing = () => {
   const [isTracking, setIsTracking] = useState(false);
   const [scanStatus, setScanStatus] = useState("SCANNING_NETWORK...");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const statuses = ["ANALYZING_GPS...", "VERIFYING_BATCHES...", "MONITORING_ZONES...", "SCANNING_NETWORK..."];
@@ -52,7 +53,32 @@ const Landing = () => {
     viewport: { once: true },
     transition: { duration: 0.8, ease: "easeOut" }
   };
-
+const portals = [
+  {
+    role: "Admin",
+    icon: "🛠️",
+    desc: "Control full system, monitor anomalies, and manage operations.",
+    route: "/adminDashboard",
+  },
+  {
+    role: "Citizen",
+    icon: "🏠",
+    desc: "Report issues and track waste.",
+    route: "/",
+  },
+  {
+    role: "Contractor",
+    icon: "🏢",
+    desc: "Manage contractor operations.",
+    route: "/adminDashboard",
+  },
+  {
+    role: "Worker",
+    icon: "🚛",
+    desc: "View assigned routes and tasks.",
+    route: "/adminDashboard",
+  },
+];
   return (
     <div className="bg-gray-950 text-white min-h-screen font-sans selection:bg-green-500/30 overflow-x-hidden">
       
@@ -181,21 +207,35 @@ const Landing = () => {
           </div>
           <Badge text="3 Tier Access" type="default" />
         </div>
-        <div className="grid md:grid-cols-3 gap-8">
-          {[
-            { role: "Citizen", icon: "🏠", desc: "Report illegal dumping, earn TrustPoints, and follow your waste's journey.", color: "green" },
-            { role: "Contractor", icon: "🏢", desc: "Monitor fleet health, verify worker attendance, and manage zone KPIs.", color: "blue" },
-            { role: "Worker", icon: "🚛", desc: "Get AI-optimized routes and scan batch QR codes for instant verification.", color: "emerald" }
-          ].map((item, idx) => (
-            <motion.div key={idx} {...fadeInUp} whileHover={{ y: -10 }} className="bg-gray-900/20 backdrop-blur-sm p-10 rounded-[2.5rem] border border-white/5 hover:border-green-500/30 transition-all cursor-pointer group">
-              <div className="text-5xl mb-8 grayscale group-hover:grayscale-0 transition-all duration-500">{item.icon}</div>
-              <h3 className="text-2xl font-black mb-4 group-hover:text-green-400 transition-colors italic uppercase">{item.role} Portal</h3>
-              <p className="text-gray-500 text-sm leading-relaxed mb-8 font-medium">{item.desc}</p>
-              <div className="h-px w-full bg-white/5 mb-6 group-hover:bg-green-500/20 transition-all" />
-              <div className="font-bold text-[10px] tracking-[0.3em] text-green-500 opacity-40 group-hover:opacity-100 transition-all uppercase">Enter_System_0{idx+1} →</div>
-            </motion.div>
-          ))}
-        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+  {portals.map((item, idx) => (
+    <motion.div
+      key={idx}
+      {...fadeInUp}
+      whileHover={{ y: -10 }}
+      onClick={() => navigate(item.route)}
+      className="bg-gray-900/20 backdrop-blur-sm p-10 rounded-[2.5rem] border border-white/5 hover:border-green-500/30 transition-all cursor-pointer group"
+    >
+      <div className="text-5xl mb-8 grayscale group-hover:grayscale-0 transition-all duration-500">
+        {item.icon}
+      </div>
+
+      <h3 className="text-2xl font-black mb-4 group-hover:text-green-400 transition-colors italic uppercase">
+        {item.role} Portal
+      </h3>
+
+      <p className="text-gray-500 text-sm leading-relaxed mb-8 font-medium">
+        {item.desc}
+      </p>
+
+      <div className="h-px w-full bg-white/5 mb-6 group-hover:bg-green-500/20 transition-all" />
+
+      <div className="font-bold text-[10px] tracking-[0.3em] text-green-500 opacity-40 group-hover:opacity-100 transition-all uppercase">
+        Enter_System_0{idx + 1} →
+      </div>
+    </motion.div>
+  ))}
+</div>
       </section>
 
       {/* --- ANOMALY SECTION --- */}
