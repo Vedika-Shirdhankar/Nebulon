@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Footer from "./components/ui/Footer";
 
 import Landing from "./pages/Landing";
 
@@ -29,22 +29,64 @@ import ApproveResolution from "./pages/citizen/ApproveResolution";
 function App() {
   return (
     <div className="bg-gray-950 min-h-screen text-white">
-      <Header />
+      
 
       <Routes>
         <Route path="/" element={<Landing />} />
 
         {/* Admin */}
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/anomaly-center" element={<AnomalyCenter />} />
-        <Route path="/worker-list" element={<WorkerList />} />
-        <Route path="/contractor-list" element={<ContractorList />} />
-        <Route path="/map-view" element={<MapView />} />
-        <Route path="/complaint-queue" element={<ComplaintQueue />} />
-        <Route path="/batch-monitor" element={<BatchMonitor />} />
-        <Route path="/zone-manager" element={<ZoneManager />} />
-        <Route path="/weekly-report" element={<WeeklyReport />} />
-        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/admin" element={
+  <>
+    <Header />
+    <AdminDashboard />
+  </>
+} />
+        <Route path="/anomaly-center" element={
+  <>
+    <Header />
+    <AnomalyCenter />
+  </> } />
+  <Route path="/worker-list" element={
+  <>
+    <Header />
+    <WorkerList />
+  </> } />
+   <Route path="/contractor-list" element={
+  <>
+    <Header />
+    <ContractorList />
+  </> } />
+         <Route path="/map-view" element={
+  <>
+    <Header />
+    <MapView />
+  </> } />
+        <Route path="/complaint-queue" element={
+  <>
+    <Header />
+    <ComplaintQueue />
+  </> } />
+   <Route path="/batch-monitor" element={
+  <>
+    <Header />
+    <BatchMonitor />
+  </> } />
+         <Route path="/zone-manager" element={
+  <>
+    <Header />
+    <ZoneManager />
+  </> } />
+   <Route path="/weekly-report" element={
+  <>
+    <Header />
+    <WeeklyReport/>
+  </> } />
+        <Route path="/settings" element={
+  <>
+    <Header />
+    <SettingsPage />
+  </> } />
+        
 
         {/* Citizen */}
         <Route path="/citizen" element={<CitizenLayout />}>
