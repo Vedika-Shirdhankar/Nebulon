@@ -2,7 +2,11 @@ import axios from "axios";
 import { supabase } from "./supabaseClient";
 
 const axiosInstance = axios.create({
+
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000", // ✅ comma added
+
   timeout: 30_000,
 });
 

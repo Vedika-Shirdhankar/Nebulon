@@ -30,6 +30,7 @@ const StatCard = ({ title, value }) => (
   </div>
 );
 
+
 // --- MAIN LANDING COMPONENT ---
 
 const Landing = () => {
@@ -58,7 +59,7 @@ const portals = [
     role: "Admin",
     icon: "🛠️",
     desc: "Control full system, monitor anomalies, and manage operations.",
-    route: "/adminDashboard",
+    route: "/admin",
   },
   {
     role: "Citizen",

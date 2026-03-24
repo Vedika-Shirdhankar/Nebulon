@@ -1,19 +1,22 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 import Landing from "./pages/Landing";
-import Footer from "./components/ui/Footer";
 
-// Admin Pages
+// Admin
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AnomalyCenter from "./pages/admin/AnomalyCentre";
-import MapView from "./pages/admin/Mapview";
-import ContractorDetail from "./pages/admin/ContractorDetail";
-import ContractorList from "./pages/admin/ContractorList";
-import WorkerDetail from "./pages/admin/WorkerDetail";
 import WorkerList from "./pages/admin/WorkerList";
+import ContractorList from "./pages/admin/ContractorList";
+import MapView from "./pages/admin/Mapview";
+import ComplaintQueue from "./pages/admin/ComplaintQueue";
+import BatchMonitor from "./pages/admin/BatchMonitor";
+import ZoneManager from "./pages/admin/ZoneManager";
+import WeeklyReport from "./pages/admin/WeeklyReport";
+import SettingsPage from "./pages/admin/Settings";
 
-// Citizen Pages
+// Citizen
 import CitizenLayout from "./pages/citizen/CitizenLayout";
 import CitizenHome from "./pages/citizen/CitizenHome";
 import ReportWaste from "./pages/citizen/ReportWaste";
@@ -25,21 +28,25 @@ import ApproveResolution from "./pages/citizen/ApproveResolution";
 
 function App() {
   return (
-    <div className="bg-gray-950 min-h-screen selection:bg-green-500/30">
+    <div className="bg-gray-950 min-h-screen text-white">
+      <Header />
+
       <Routes>
-        {/* Landing Page */}
         <Route path="/" element={<Landing />} />
 
-        {/* Admin Routes */}
-        <Route path="/adminDashboard" element={<AdminDashboard />} />
+        {/* Admin */}
+        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/anomaly-center" element={<AnomalyCenter />} />
-        <Route path="/map-view" element={<MapView />} />
-        <Route path="/contractor-detail" element={<ContractorDetail />} />
-        <Route path="/contractor-list" element={<ContractorList />} />
-        <Route path="/worker-detail" element={<WorkerDetail />} />
         <Route path="/worker-list" element={<WorkerList />} />
+        <Route path="/contractor-list" element={<ContractorList />} />
+        <Route path="/map-view" element={<MapView />} />
+        <Route path="/complaint-queue" element={<ComplaintQueue />} />
+        <Route path="/batch-monitor" element={<BatchMonitor />} />
+        <Route path="/zone-manager" element={<ZoneManager />} />
+        <Route path="/weekly-report" element={<WeeklyReport />} />
+        <Route path="/settings" element={<SettingsPage />} />
 
-        {/* Citizen Routes */}
+        {/* Citizen */}
         <Route path="/citizen" element={<CitizenLayout />}>
           <Route index element={<CitizenHome />} />
           <Route path="report" element={<ReportWaste />} />
@@ -51,7 +58,6 @@ function App() {
         </Route>
       </Routes>
 
-      {/* Footer stays global */}
       <Footer />
     </div>
   );
