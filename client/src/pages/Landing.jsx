@@ -64,7 +64,7 @@ const portals = [
     role: "Citizen",
     icon: "🏠",
     desc: "Report issues and track waste.",
-    route: "/",
+    route: "/citizen",
   },
   {
     role: "Contractor",

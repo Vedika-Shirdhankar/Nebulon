@@ -1,5 +1,5 @@
 // server/controllers/batch.controller.js
-import supabase from "../config/supabase.js";
+import { supabase } from "../config/supabase.js";
 import { generateQRBase64, createTrackingUrl } from "./qr.controller.js";
 import { uploadPhoto } from "../services/storage.service.js";
 import { updateCitizenScore } from "../services/score.service.js";

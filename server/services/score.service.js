@@ -1,5 +1,5 @@
 // server/services/score.service.js
-import supabase from "../config/supabase.js";
+import { supabase } from "../config/supabase.js";
 
 /**
  * Recalculate and persist the credibility score for a citizen.

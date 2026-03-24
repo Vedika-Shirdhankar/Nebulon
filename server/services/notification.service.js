@@ -1,5 +1,5 @@
 // server/services/notification.service.js
-import supabase from "../config/supabase.js";
+import { supabase } from "../config/supabase.js";
 
 /**
  * Insert a notification row that Supabase Realtime will broadcast

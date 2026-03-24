@@ -1,8 +1,8 @@
 // server/routes/batch.routes.js
 import { Router } from "express";
 import multer from "multer";
-import { auth } from "../middleware/auth.js";
-import { roleGuard } from "../middleware/roleGuard.js";
+import  auth  from "../middleware/auth.js";
+import  roleGuard from "../middleware/roleGuard.js";
 import {
   citizenCreateBatch,
   getCitizenBatches,
@@ -24,7 +24,7 @@ const upload = multer({
 
 // ── Citizen routes ────────────────────────────────────────────────────────────
 // Create a new waste batch
-router.post("/citizen-create", auth, upload.single("photo"), citizenCreateBatch);
+router.post("/citizen-create", upload.single("photo"), citizenCreateBatch);
 
 // List all batches for the logged-in citizen
 router.get("/citizen", auth, getCitizenBatches);

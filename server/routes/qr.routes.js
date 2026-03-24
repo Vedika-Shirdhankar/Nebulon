@@ -1,6 +1,6 @@
 // server/routes/qr.routes.js
 import { Router } from "express";
-import { auth } from "../middleware/auth.js";
+import auth from "../middleware/auth.js";
 import { getBatchQR, decodeQR } from "../controllers/qr.controller.js";
 
 const router = Router();

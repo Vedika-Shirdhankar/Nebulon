@@ -1,6 +1,6 @@
 // server/controllers/qr.controller.js
 import QRCode from "qrcode";
-import supabase from "../config/supabase.js";
+import { supabase } from "../config/supabase.js";
 
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
 

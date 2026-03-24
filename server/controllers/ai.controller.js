@@ -1,7 +1,7 @@
 // server/controllers/ai.controller.js
 import { uploadPhoto } from "../services/storage.service.js";
 import { runSegregationCheck, generateWeeklyReportOllama } from "../services/ollama.service.js";
-import supabase from "../config/supabase.js";
+import { supabase } from "../config/supabase.js";
 
 // POST /ai/segregation-check
 // Expects: multipart/form-data with field "photo"

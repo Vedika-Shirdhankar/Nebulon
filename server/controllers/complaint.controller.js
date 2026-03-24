@@ -1,5 +1,5 @@
 // server/controllers/complaint.controller.js
-import supabase from "../config/supabase.js";
+import { supabase } from "../config/supabase.js";
 import { uploadPhoto } from "../services/storage.service.js";
 import { notifyComplaintUpdate } from "../services/notification.service.js";
 

@@ -1,10 +1,5 @@
-const { supabaseAdmin } = require("../config/supabase");
+import { supabase } from "../config/supabase.js";
 
-/**
- * auth middleware
- * Verifies the Supabase JWT from the Authorization header
- * and attaches the decoded user to req.user
- */
 const auth = async (req, res, next) => {
   try {
     const authHeader = req.headers["authorization"];
@@ -15,13 +10,12 @@ const auth = async (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
 
-    const { data, error } = await supabaseAdmin.auth.getUser(token);
+    const { data, error } = await supabase.auth.getUser(token);
 
     if (error || !data?.user) {
       return res.status(401).json({ message: "Invalid or expired token" });
     }
 
-    // Attach user and role to request
     req.user = {
       ...data.user,
       role:
@@ -36,4 +30,4 @@ const auth = async (req, res, next) => {
   }
 };
 
-module.exports = auth;
+export default auth;

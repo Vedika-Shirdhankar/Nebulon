@@ -1,5 +1,5 @@
 // server/services/storage.service.js
-import supabase from "../config/supabase.js";
+import { supabase } from "../config/supabase.js";
 import { v4 as uuidv4 } from "uuid";
 import path from "path";
 

@@ -2,10 +2,6 @@
  * roleGuard(roles)
  * Middleware factory that restricts access to users with specific roles.
  * Must be used AFTER the auth middleware (req.user must be set).
- *
- * Usage:
- *   router.get("/admin-only", auth, roleGuard(["admin"]), handler);
- *   router.post("/citizen-create", auth, roleGuard(["citizen"]), handler);
  */
 const roleGuard = (allowedRoles = []) => {
   return (req, res, next) => {
@@ -14,7 +10,7 @@ const roleGuard = (allowedRoles = []) => {
     }
 
     if (allowedRoles.length === 0) {
-      return next(); // no role restriction
+      return next();
     }
 
     if (!allowedRoles.includes(req.user.role)) {
@@ -28,4 +24,4 @@ const roleGuard = (allowedRoles = []) => {
   };
 };
 
-module.exports = roleGuard;
+export default roleGuard;

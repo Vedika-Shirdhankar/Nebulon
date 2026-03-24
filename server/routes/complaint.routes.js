@@ -1,8 +1,8 @@
 // server/routes/complaint.routes.js
 import { Router } from "express";
 import multer from "multer";
-import { auth } from "../middleware/auth.js";
-import { roleGuard } from "../middleware/roleGuard.js";
+import auth from "../middleware/auth.js";
+import roleGuard from "../middleware/roleGuard.js";
 import {
   createComplaint,
   getCitizenComplaints,
