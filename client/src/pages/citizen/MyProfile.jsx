@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import axiosInstance from "../../lib/axios";
-import Card from "../../components/ui/Card";
-import CredibilityBadge from "../../components/ui/CredibilityBadge";
-import Badge from "../../components/ui/Badge";
+import { motion } from "framer-motion";
+import { Zap, BarChart3, Award } from "lucide-react";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
 export default function MyProfile() {
@@ -22,7 +21,7 @@ export default function MyProfile() {
         setProfile(profileRes.data);
         setHistory(historyRes.data);
       } catch (err) {
-        console.error("Failed to load profile", err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -30,170 +29,186 @@ export default function MyProfile() {
     fetchProfile();
   }, []);
 
-  if (loading)
-    return (
-      <div className="flex justify-center py-20">
-        <LoadingSpinner />
-      </div>
-    );
-
-  const scoreColor = (score) => {
-    if (score >= 80) return "text-green-600";
-    if (score >= 50) return "text-yellow-600";
-    return "text-red-600";
+  const getScoreColor = (score) => {
+    if (score >= 80) return "#22c55e";
+    if (score >= 50) return "#eab308";
+    return "#f87171"; // softer red
   };
 
-  return (
-    <div className="p-6 max-w-2xl mx-auto space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
-        <p className="text-gray-500 text-sm mt-1">
-          Your waste accountability record
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[70vh]">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 1.5 }}
+        >
+          <LoadingSpinner />
+        </motion.div>
+        <p className="text-xs mt-4 tracking-[0.3em] text-emerald-400">
+          LOADING PROFILE
         </p>
       </div>
+    );
+  }
 
-      {/* Profile Card */}
-      <Card>
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center text-2xl">
-            {user?.user_metadata?.name?.[0]?.toUpperCase() || "C"}
+  const score = profile?.segregation_score ?? 0;
+  const color = getScoreColor(score);
+
+  const memberSince = user?.created_at
+    ? new Date(user.created_at).getFullYear()
+    : "—";
+
+  return (
+    <div className="min-h-screen w-full flex justify-center px-4 py-12 bg-[#020617]">
+
+      <div className="w-full max-w-2xl mx-auto flex flex-col items-center gap-12">
+
+        {/* HERO PROFILE */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full flex flex-col items-center text-center rounded-3xl p-10 bg-white/5 border border-white/10 backdrop-blur-xl shadow-xl"
+        >
+
+          {/* Avatar */}
+          <div className="relative h-32 w-32 flex items-center justify-center">
+            <div className="absolute inset-0 rounded-full bg-emerald-500 blur-2xl opacity-30"></div>
+            <div className="relative z-10 h-full w-full rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-5xl font-black text-white shadow-xl">
+              {user?.user_metadata?.name?.[0] || "C"}
+            </div>
           </div>
-          <div className="flex-1">
-            <p className="text-lg font-bold text-gray-900">
-              {user?.user_metadata?.name || "Citizen"}
-            </p>
-            <p className="text-sm text-gray-500">{user?.email}</p>
-            <p className="text-xs text-gray-400 mt-1">
-              Member since{" "}
-              {new Date(user?.created_at).toLocaleDateString("en-IN", {
-                month: "long",
-                year: "numeric",
-              })}
-            </p>
+
+          <h1 className="mt-6 text-3xl font-extrabold text-white">
+            {user?.user_metadata?.name || "Citizen"}
+          </h1>
+
+          <p className="text-slate-400 text-sm mt-1">
+            {user?.email}
+          </p>
+
+          <p className="text-xs text-slate-500 mt-1">
+            Member since {memberSince}
+          </p>
+
+          <button className="mt-6 px-6 py-2 rounded-xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 hover:bg-emerald-500/30 transition">
+            Edit Profile
+          </button>
+        </motion.div>
+
+        {/* SCORE */}
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="w-full flex flex-col items-center rounded-3xl p-10 bg-white/5 border border-white/10 backdrop-blur-xl shadow-xl"
+        >
+          <div className="relative flex items-center justify-center bg-white/5 rounded-full p-6">
+
+            <svg className="w-40 h-40 -rotate-90">
+              <circle
+                cx="80"
+                cy="80"
+                r="70"
+                stroke="rgba(255,255,255,0.06)"
+                strokeWidth="10"
+                fill="none"
+              />
+              <motion.circle
+                cx="80"
+                cy="80"
+                r="70"
+                stroke={color}
+                strokeWidth="10"
+                fill="none"
+                strokeLinecap="round"
+                strokeDasharray={440}
+                strokeDashoffset={440 - (440 * score) / 100}
+                initial={{ strokeDashoffset: 440 }}
+                animate={{ strokeDashoffset: 440 - (440 * score) / 100 }}
+                transition={{ duration: 1.5 }}
+              />
+            </svg>
+
+            <div className="absolute text-center">
+              <p className="text-3xl font-black" style={{ color }}>
+                {score}%
+              </p>
+              <p className="text-xs text-slate-400">Score</p>
+            </div>
           </div>
-          {profile && (
-            <CredibilityBadge score={profile.segregation_score ?? 0} />
+
+          <p className="mt-4 font-semibold" style={{ color }}>
+            {score >= 80
+              ? "Elite Citizen 🌱"
+              : score >= 50
+              ? "Doing Good 👍"
+              : "Needs Improvement ⚠️"}
+          </p>
+        </motion.div>
+
+        {/* STATS */}
+        <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {[
+            { label: "Total Batches", value: profile?.total_batches, icon: Zap },
+            { label: "AI Checks", value: profile?.total_checks, icon: BarChart3 },
+            { label: "Resolutions", value: profile?.complaints_resolved, icon: Award },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ scale: 1.05 }}
+              className="rounded-2xl p-6 bg-white/5 border border-white/10 backdrop-blur-xl text-center shadow-md hover:shadow-lg transition"
+            >
+              <div className="flex justify-center mb-3 text-white">
+                <item.icon size={22} />
+              </div>
+              <p className="text-2xl font-bold text-white">
+                {item.value || 0}
+              </p>
+              <p className="text-xs text-slate-400 uppercase tracking-wider mt-1">
+                {item.label}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* ACTIVITY */}
+        <div className="w-full rounded-3xl p-8 bg-white/5 border border-white/10 backdrop-blur-xl shadow-xl">
+          <h3 className="text-xl font-bold text-white mb-6">
+            Recent Activity
+          </h3>
+
+          {history.length === 0 ? (
+            <p className="text-slate-400 text-center py-10">
+              No activity yet
+            </p>
+          ) : (
+            <div className="space-y-4">
+              {history.slice(0, 6).map((item) => (
+                <motion.div
+                  key={item.id}
+                  whileHover={{ scale: 1.02 }}
+                  className="flex justify-between items-center p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition"
+                >
+                  <div>
+                    <p className="text-white text-sm font-semibold">
+                      Segregation Audit
+                    </p>
+                    <p className="text-xs text-slate-400">
+                      {new Date(item.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+
+                  <p
+                    className="font-bold"
+                    style={{ color: getScoreColor(item.score) }}
+                  >
+                    {item.score}%
+                  </p>
+                </motion.div>
+              ))}
+            </div>
           )}
         </div>
-      </Card>
 
-      {/* Score Breakdown */}
-      {profile && (
-        <Card>
-          <p className="text-sm font-semibold text-gray-700 mb-4">
-            Segregation Score Breakdown
-          </p>
-          <div className="flex items-center gap-4 mb-4">
-            <div
-              className={`text-5xl font-bold ${scoreColor(
-                profile.segregation_score ?? 0
-              )}`}
-            >
-              {profile.segregation_score ?? 0}
-              <span className="text-xl font-normal">%</span>
-            </div>
-            <div className="flex-1">
-              <div className="w-full bg-gray-200 rounded-full h-3">
-                <div
-                  className={`h-3 rounded-full transition-all duration-700 ${
-                    (profile.segregation_score ?? 0) >= 80
-                      ? "bg-green-500"
-                      : (profile.segregation_score ?? 0) >= 50
-                      ? "bg-yellow-500"
-                      : "bg-red-500"
-                  }`}
-                  style={{ width: `${profile.segregation_score ?? 0}%` }}
-                />
-              </div>
-              <p className="text-xs text-gray-400 mt-1">
-                {(profile.segregation_score ?? 0) >= 80
-                  ? "Excellent segregation! Keep it up."
-                  : (profile.segregation_score ?? 0) >= 50
-                  ? "Good, but room for improvement."
-                  : "Needs significant improvement."}
-              </p>
-            </div>
-          </div>
-          <div className="grid grid-cols-3 gap-3 text-center">
-            <div className="bg-gray-50 rounded-lg p-3">
-              <p className="text-xl font-bold text-gray-800">
-                {profile.total_batches ?? 0}
-              </p>
-              <p className="text-xs text-gray-400">Total Batches</p>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-3">
-              <p className="text-xl font-bold text-gray-800">
-                {profile.total_checks ?? 0}
-              </p>
-              <p className="text-xs text-gray-400">AI Checks Done</p>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-3">
-              <p className="text-xl font-bold text-gray-800">
-                {profile.complaints_resolved ?? 0}
-              </p>
-              <p className="text-xs text-gray-400">Complaints Resolved</p>
-            </div>
-          </div>
-        </Card>
-      )}
-
-      {/* Segregation History */}
-      <div>
-        <h2 className="text-sm font-semibold text-gray-700 mb-3">
-          Segregation Check History
-        </h2>
-        {history.length === 0 ? (
-          <Card>
-            <p className="text-center text-gray-400 py-6 text-sm">
-              No segregation checks yet. Try the{" "}
-              <a
-                href="/citizen/segregation-check"
-                className="text-indigo-600 hover:underline"
-              >
-                Segregation Check
-              </a>{" "}
-              feature!
-            </p>
-          </Card>
-        ) : (
-          <div className="space-y-3">
-            {history.map((item) => (
-              <Card key={item.id} className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-700 font-medium">
-                    Score:{" "}
-                    <span className={scoreColor(item.score)}>
-                      {item.score}%
-                    </span>
-                  </p>
-                  <p className="text-xs text-gray-400">
-                    {new Date(item.created_at).toLocaleDateString("en-IN")}
-                  </p>
-                  {item.wrong_items_count > 0 && (
-                    <p className="text-xs text-red-500">
-                      {item.wrong_items_count} wrong item(s) detected
-                    </p>
-                  )}
-                </div>
-                <Badge
-                  color={
-                    item.score >= 80
-                      ? "green"
-                      : item.score >= 50
-                      ? "yellow"
-                      : "red"
-                  }
-                >
-                  {item.score >= 80
-                    ? "Excellent"
-                    : item.score >= 50
-                    ? "Fair"
-                    : "Poor"}
-                </Badge>
-              </Card>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );

@@ -56,26 +56,94 @@ import ClearComplaint from "./pages/worker/ClearComplaint";
 function App() {
   return (
     <div className="bg-gray-950 min-h-screen text-white">
-      <Header />
 
       <Routes>
 
-        {/* ---------------- LANDING ---------------- */}
-        <Route
-          path="/"
-          element={
-            <>
-              <Landing />
-              <Footer />
-            </>
-          }
-        />
+        {/* ✅ LANDING (ADDED — YOU MISSED THIS) */}
+        <Route path="/" element={
+          <>
+            <Header />
+            <Landing />
+            <Footer />
+          </>
+        } />
 
-        {/* ---------------- AUTH ---------------- */}
+        {/* Admin */}
+        <Route path="/admin" element={
+          <>
+            <Header />
+            <AdminDashboard />
+          </>
+        } />
+
+        <Route path="/anomaly-center" element={
+          <>
+            <Header />
+            <AnomalyCenter />
+          </>
+        } />
+
+        <Route path="/worker-list" element={
+          <>
+            <Header />
+            <WorkerList />
+          </>
+        } />
+
+        <Route path="/contractor-list" element={
+          <>
+            <Header />
+            <ContractorList />
+          </>
+        } />
+
+        <Route path="/map-view" element={
+          <>
+            <Header />
+            <MapView />
+          </>
+        } />
+
+        <Route path="/complaint-queue" element={
+          <>
+            <Header />
+            <ComplaintQueue />
+          </>
+        } />
+
+        <Route path="/batch-monitor" element={
+          <>
+            <Header />
+            <BatchMonitor />
+          </>
+        } />
+
+        <Route path="/zone-manager" element={
+          <>
+            <Header />
+            <ZoneManager />
+          </>
+        } />
+
+        <Route path="/weekly-report" element={
+          <>
+            <Header />
+            <WeeklyReport />
+          </>
+        } />
+
+        <Route path="/settings" element={
+          <>
+            <Header />
+            <SettingsPage />
+          </>
+        } />
+
+        {/* AUTH */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* ---------------- ADMIN ---------------- */}
+        {/* ADMIN (your original — kept) */}
         <Route path="/adminDashboard" element={<AdminDashboard />} />
         <Route path="/adminDashboard/anomaly-center" element={<AnomalyCenter />} />
         <Route path="/adminDashboard/map-view" element={<MapView />} />
@@ -84,14 +152,13 @@ function App() {
         <Route path="/adminDashboard/workers" element={<WorkerList />} />
         <Route path="/adminDashboard/workers/:id" element={<WorkerDetail />} />
 
-        {/* ✅ ADDED MISSING ROUTES (YOU IMPORTED THEM BUT DIDN’T USE) */}
         <Route path="/adminDashboard/complaints" element={<ComplaintQueue />} />
         <Route path="/adminDashboard/batch-monitor" element={<BatchMonitor />} />
         <Route path="/adminDashboard/zones" element={<ZoneManager />} />
         <Route path="/adminDashboard/reports" element={<WeeklyReport />} />
         <Route path="/adminDashboard/settings" element={<SettingsPage />} />
 
-        {/* ---------------- CITIZEN ---------------- */}
+        {/* CITIZEN */}
         <Route path="/citizen" element={<CitizenLayout />}>
           <Route index element={<CitizenHome />} />
           <Route path="report" element={<ReportWaste />} />
@@ -102,7 +169,7 @@ function App() {
           <Route path="approve" element={<ApproveResolution />} />
         </Route>
 
-        {/* ---------------- CONTRACTOR ---------------- */}
+        {/* CONTRACTOR */}
         <Route path="/contractor" element={<ContractorLayout />}>
           <Route index element={<ContractorHome />} />
           <Route path="workers" element={<WorkerManage />} />
@@ -112,7 +179,7 @@ function App() {
           <Route path="score" element={<MyScore />} />
         </Route>
 
-        {/* ---------------- WORKER ---------------- */}
+        {/* WORKER */}
         <Route path="/worker" element={<WorkerLayout />}>
           <Route index element={<WorkerHome />} />
           <Route path="route" element={<RouteView />} />
@@ -123,15 +190,12 @@ function App() {
           <Route path="score" element={<WorkerScore />} />
         </Route>
 
-        {/* ---------------- FALLBACK (IMPORTANT) ---------------- */}
-        <Route
-          path="*"
-          element={
-            <div className="flex items-center justify-center h-screen text-gray-400">
-              404 | Page Not Found
-            </div>
-          }
-        />
+        {/* FALLBACK */}
+        <Route path="*" element={
+          <div className="flex items-center justify-center h-screen text-gray-400">
+            404 | Page Not Found
+          </div>
+        } />
 
       </Routes>
     </div>
