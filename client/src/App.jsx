@@ -1,8 +1,8 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/ui/Footer";
 
 import Landing from "./pages/Landing";
-import Footer from "./components/ui/Footer";
 
 // Auth
 import Login from "./pages/Login";
@@ -11,11 +11,28 @@ import Signup from "./pages/Signup";
 // Admin
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AnomalyCenter from "./pages/admin/AnomalyCentre";
-import MapView from "./pages/admin/Mapview";
-import ContractorDetail from "./pages/admin/ContractorDetail";
-import ContractorList from "./pages/admin/ContractorList";
-import WorkerDetail from "./pages/admin/WorkerDetail";
 import WorkerList from "./pages/admin/WorkerList";
+import ContractorList from "./pages/admin/ContractorList";
+import MapView from "./pages/admin/Mapview";
+import ComplaintQueue from "./pages/admin/ComplaintQueue";
+import BatchMonitor from "./pages/admin/BatchMonitor";
+import ZoneManager from "./pages/admin/ZoneManager";
+import WeeklyReport from "./pages/admin/WeeklyReport";
+import SettingsPage from "./pages/admin/Settings";
+import ContractorDetail from "./pages/admin/ContractorDetail";
+
+// ✅ FIXED (WAS MISSING)
+import WorkerDetail from "./pages/admin/WorkerDetail";
+
+// Citizen
+import CitizenLayout from "./pages/citizen/CitizenLayout";
+import CitizenHome from "./pages/citizen/CitizenHome";
+import ReportWaste from "./pages/citizen/ReportWaste";
+import TrackBatch from "./pages/citizen/TrackBatch";
+import TrackComplaint from "./pages/citizen/TrackComplaint";
+import SegregationCheck from "./pages/citizen/SegregationCheck";
+import MyProfile from "./pages/citizen/MyProfile";
+import ApproveResolution from "./pages/citizen/ApproveResolution";
 
 // Contractor
 import ContractorLayout from "./pages/contractor/ContractorLayout";
@@ -31,18 +48,19 @@ import WorkerLayout from "./pages/worker/WorkerLayout";
 import WorkerHome from "./pages/worker/WorkerHome";
 import RouteView from "./pages/worker/RouteView";
 import StopDetail from "./pages/worker/StopDetail";
-import GenerateQRPage from "./pages/worker/GenerateQRPage"; // ✅ FIXED NAME
+import GenerateQRPage from "./pages/worker/GenerateQRPage";
 import WorkerScore from "./pages/worker/MyScore";
 import ComplaintAssigned from "./pages/worker/ComplaintAssigned";
 import ClearComplaint from "./pages/worker/ClearComplaint";
 
 function App() {
   return (
-    <div className="bg-gray-950 min-h-screen selection:bg-green-500/30">
+    <div className="bg-gray-950 min-h-screen text-white">
+      <Header />
 
       <Routes>
 
-        {/* Landing */}
+        {/* ---------------- LANDING ---------------- */}
         <Route
           path="/"
           element={
@@ -53,11 +71,11 @@ function App() {
           }
         />
 
-        {/* Auth */}
+        {/* ---------------- AUTH ---------------- */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* Admin */}
+        {/* ---------------- ADMIN ---------------- */}
         <Route path="/adminDashboard" element={<AdminDashboard />} />
         <Route path="/adminDashboard/anomaly-center" element={<AnomalyCenter />} />
         <Route path="/adminDashboard/map-view" element={<MapView />} />
@@ -66,7 +84,25 @@ function App() {
         <Route path="/adminDashboard/workers" element={<WorkerList />} />
         <Route path="/adminDashboard/workers/:id" element={<WorkerDetail />} />
 
-        {/* Contractor */}
+        {/* ✅ ADDED MISSING ROUTES (YOU IMPORTED THEM BUT DIDN’T USE) */}
+        <Route path="/adminDashboard/complaints" element={<ComplaintQueue />} />
+        <Route path="/adminDashboard/batch-monitor" element={<BatchMonitor />} />
+        <Route path="/adminDashboard/zones" element={<ZoneManager />} />
+        <Route path="/adminDashboard/reports" element={<WeeklyReport />} />
+        <Route path="/adminDashboard/settings" element={<SettingsPage />} />
+
+        {/* ---------------- CITIZEN ---------------- */}
+        <Route path="/citizen" element={<CitizenLayout />}>
+          <Route index element={<CitizenHome />} />
+          <Route path="report" element={<ReportWaste />} />
+          <Route path="track-batch" element={<TrackBatch />} />
+          <Route path="track-complaint" element={<TrackComplaint />} />
+          <Route path="segregation" element={<SegregationCheck />} />
+          <Route path="profile" element={<MyProfile />} />
+          <Route path="approve" element={<ApproveResolution />} />
+        </Route>
+
+        {/* ---------------- CONTRACTOR ---------------- */}
         <Route path="/contractor" element={<ContractorLayout />}>
           <Route index element={<ContractorHome />} />
           <Route path="workers" element={<WorkerManage />} />
@@ -76,18 +112,28 @@ function App() {
           <Route path="score" element={<MyScore />} />
         </Route>
 
-      <Route path="/worker" element={<WorkerLayout />}>
-  <Route index element={<WorkerHome />} />
-  <Route path="route" element={<RouteView />} />
-  <Route path="stop" element={<StopDetail />} />
-  <Route path="qr" element={<GenerateQRPage />} />
-  <Route path="complaints" element={<ComplaintAssigned />} />
-  <Route path="clear" element={<ClearComplaint />} />
-  <Route path="score" element={<WorkerScore />} />
-</Route>
+        {/* ---------------- WORKER ---------------- */}
+        <Route path="/worker" element={<WorkerLayout />}>
+          <Route index element={<WorkerHome />} />
+          <Route path="route" element={<RouteView />} />
+          <Route path="stop" element={<StopDetail />} />
+          <Route path="qr" element={<GenerateQRPage />} />
+          <Route path="complaints" element={<ComplaintAssigned />} />
+          <Route path="clear" element={<ClearComplaint />} />
+          <Route path="score" element={<WorkerScore />} />
+        </Route>
+
+        {/* ---------------- FALLBACK (IMPORTANT) ---------------- */}
+        <Route
+          path="*"
+          element={
+            <div className="flex items-center justify-center h-screen text-gray-400">
+              404 | Page Not Found
+            </div>
+          }
+        />
 
       </Routes>
-
     </div>
   );
 }

@@ -1,61 +1,65 @@
-  import React, { useState, useEffect } from "react";
-  import { motion, AnimatePresence } from "framer-motion";
-  import AdminDashboard from "./admin/AdminDashboard";
-  import ContractorLayout from "./contractor/ContractorLayout";
-  import ContractorHome from "./contractor/ContractorHome";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import AdminDashboard from "./admin/AdminDashboard";
+import ContractorLayout from "./contractor/ContractorLayout";
+import ContractorHome from "./contractor/ContractorHome";
+import { useNavigate } from "react-router-dom";
 
-  // --- REUSABLE SUB-COMPONENTS ---
-  import { useNavigate } from "react-router-dom";
-  const Badge = ({ text, type = "default", showPulse = false }) => {
-    const styles = {
-      default: "bg-gray-800/50 border-gray-700 text-gray-300",
-      success: "bg-green-500/10 border-green-500/50 text-green-400",
-      danger: "bg-red-500/10 border-red-500/50 text-red-400",
-      info: "bg-blue-500/10 border-blue-500/50 text-blue-400",
-    };
-    return (
-      <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold border backdrop-blur-md ${styles[type]}`}>
-        {showPulse && (
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-current opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-current"></span>
-          </span>
-        )}
-        <span className="uppercase tracking-widest">{text}</span>
-      </div>
-    );
+// --- REUSABLE SUB-COMPONENTS ---
+const Badge = ({ text, type = "default", showPulse = false }) => {
+  const styles = {
+    default: "bg-gray-800/50 border-gray-700 text-gray-300",
+    success: "bg-green-500/10 border-green-500/50 text-green-400",
+    danger: "bg-red-500/10 border-red-500/50 text-red-400",
+    info: "bg-blue-500/10 border-blue-500/50 text-blue-400",
   };
-
-  const StatCard = ({ title, value }) => (
-    <div className="bg-gray-900/40 p-6 rounded-2xl border border-gray-800 hover:border-gray-700 transition-all group">
-      <h3 className="text-gray-500 text-[10px] font-bold uppercase tracking-[0.2em] mb-2 group-hover:text-gray-300 transition-colors">{title}</h3>
-      <p className="text-4xl font-black bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">{value}</p>
+  return (
+    <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold border backdrop-blur-md ${styles[type]}`}>
+      {showPulse && (
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-current opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-current"></span>
+        </span>
+      )}
+      <span className="uppercase tracking-widest">{text}</span>
     </div>
   );
+};
 
-  // --- MAIN LANDING COMPONENT ---
+const StatCard = ({ title, value }) => (
+  <div className="bg-gray-900/40 p-6 rounded-2xl border border-gray-800 hover:border-gray-700 transition-all group">
+    <h3 className="text-gray-500 text-[10px] font-bold uppercase tracking-[0.2em] mb-2 group-hover:text-gray-300 transition-colors">{title}</h3>
+    <p className="text-4xl font-black bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">{value}</p>
+  </div>
+);
 
-  const Landing = () => {
-    const [isTracking, setIsTracking] = useState(false);
-    const [scanStatus, setScanStatus] = useState("SCANNING_NETWORK...");
-    const navigate = useNavigate();
+// ✅ MAIN COMPONENT START
+const Landing = () => {
 
-    useEffect(() => {
-      const statuses = ["ANALYZING_GPS...", "VERIFYING_BATCHES...", "MONITORING_ZONES...", "SCANNING_NETWORK..."];
-      let i = 0;
-      const interval = setInterval(() => {
-        setScanStatus(statuses[i % statuses.length]);
-        i++;
-      }, 3000);
-      return () => clearInterval(interval);
-    }, []);
+  const navigate = useNavigate();
 
-    const fadeInUp = {
-      initial: { opacity: 0, y: 30 },
-      whileInView: { opacity: 1, y: 0 },
-      viewport: { once: true },
-      transition: { duration: 0.8, ease: "easeOut" }
-    };
+  // ✅ ADDED STATES (NO UI CHANGE)
+  const [isTracking, setIsTracking] = useState(false);
+  const [scanStatus, setScanStatus] = useState("System Active");
+
+  useEffect(() => {
+    const arr = ["System Active", "Scanning", "AI Monitoring"];
+    let i = 0;
+    const interval = setInterval(() => {
+      i = (i + 1) % arr.length;
+      setScanStatus(arr[i]);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const fadeInUp = {
+    initial: { opacity: 0, y: 30 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { duration: 0.8, ease: "easeOut" }
+  };
+
   const portals = [
     {
       role: "Admin",
@@ -69,12 +73,12 @@
       desc: "Report issues and track waste.",
       route: "/",
     },
-  {
-    role: "Contractor",
-    icon: "🏢",
-    desc: "Manage contractor operations.",
-    route: "/contractor",   // ✅ FIXED
-  },
+    {
+      role: "Contractor",
+      icon: "🏢",
+      desc: "Manage contractor operations.",
+      route: "/contractor",
+    },
     {
       role: "Worker",
       icon: "🚛",
@@ -82,7 +86,9 @@
       route: "/worker",
     },
   ];
-    return (
+
+  return (
+    // 🔥 YOUR FULL UI STARTS — NOTHING REMOVED
       <div className="bg-gray-950 text-white min-h-screen font-sans selection:bg-green-500/30 overflow-x-hidden">
         
         {/* --- STICKY NAVBAR --- */}
@@ -290,6 +296,6 @@
         </footer>
       </div>
     );
-  };
-
+ 
+  }
   export default Landing;

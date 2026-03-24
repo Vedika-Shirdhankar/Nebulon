@@ -5,23 +5,107 @@ import {
 } from "lucide-react";
 
 // ─── Fake truck data ──────────────────────────────────────────────────────────
-const TRUCKS = [
-  { id: "TK-042", lat: 19.076, lng: 72.877, state: "Maharashtra", district: "Mumbai",        status: "COLLECTING",  waste: 2.4, worker: "Ravi Kumar",    contractor: "GreenHaul Pvt",    lastUpdate: "2m ago",  anomaly: true,  anomalyType: "GHOST_PICKUP",      route: "MH-R14", capacity: 5 },
-  { id: "TK-071", lat: 19.220, lng: 72.978, state: "Maharashtra", district: "Thane",         status: "IN_TRANSIT",  waste: 3.8, worker: "Suresh Patil",   contractor: "EcoTrack Ltd",     lastUpdate: "5m ago",  anomaly: false, route: "MH-R22", capacity: 5 },
-  { id: "TK-103", lat: 18.520, lng: 73.856, state: "Maharashtra", district: "Pune",          status: "AT_FACILITY", waste: 4.9, worker: "Amit Singh",     contractor: "Swachh Systems",   lastUpdate: "12m ago", anomaly: false, route: "MH-R08", capacity: 5 },
-  { id: "TK-118", lat: 19.997, lng: 73.789, state: "Maharashtra", district: "Nashik",        status: "IDLE",        waste: 0,   worker: "Kiran More",     contractor: "CityClean Co.",    lastUpdate: "28m ago", anomaly: true,  anomalyType: "ROUTE_DEVIATION",   route: "MH-R31", capacity: 5 },
-  { id: "TK-091", lat: 19.840, lng: 75.299, state: "Maharashtra", district: "Aurangabad",    status: "COLLECTING",  waste: 1.2, worker: "Deepak Rane",    contractor: "GreenHaul Pvt",    lastUpdate: "3m ago",  anomaly: false, route: "MH-R19", capacity: 5 },
-  { id: "TK-201", lat: 28.644, lng: 77.216, state: "Delhi",       district: "Central Delhi", status: "IN_TRANSIT",  waste: 3.1, worker: "Mohit Sharma",   contractor: "Capital Waste Co.",lastUpdate: "7m ago",  anomaly: false, route: "DL-R04", capacity: 5 },
-  { id: "TK-214", lat: 28.700, lng: 77.100, state: "Delhi",       district: "West Delhi",    status: "COLLECTING",  waste: 2.0, worker: "Pradeep Gupta",  contractor: "Capital Waste Co.",lastUpdate: "1m ago",  anomaly: true,  anomalyType: "BATCH_STAGNATION",  route: "DL-R11", capacity: 5 },
-  { id: "TK-301", lat: 12.971, lng: 77.594, state: "Karnataka",   district: "Bangalore",     status: "AT_FACILITY", waste: 4.2, worker: "Venkat Reddy",   contractor: "BangaloreGreen",   lastUpdate: "18m ago", anomaly: false, route: "KA-R07", capacity: 5 },
-  { id: "TK-319", lat: 15.850, lng: 74.499, state: "Karnataka",   district: "Belgaum",       status: "IN_TRANSIT",  waste: 2.7, worker: "Sanjay Nayak",   contractor: "BangaloreGreen",   lastUpdate: "9m ago",  anomaly: false, route: "KA-R15", capacity: 5 },
-  { id: "TK-401", lat: 13.083, lng: 80.270, state: "Tamil Nadu",  district: "Chennai",       status: "COLLECTING",  waste: 1.8, worker: "Murugan R.",     contractor: "Chennai Civic",    lastUpdate: "4m ago",  anomaly: false, route: "TN-R02", capacity: 5 },
-  { id: "TK-501", lat: 23.022, lng: 72.571, state: "Gujarat",     district: "Ahmedabad",     status: "IN_TRANSIT",  waste: 3.5, worker: "Nilesh Patel",   contractor: "Gujarat Green",    lastUpdate: "6m ago",  anomaly: false, route: "GJ-R09", capacity: 5 },
-  { id: "TK-518", lat: 21.170, lng: 72.831, state: "Gujarat",     district: "Surat",         status: "IDLE",        waste: 0,   worker: "Dinesh Shah",    contractor: "Gujarat Green",    lastUpdate: "41m ago", anomaly: true,  anomalyType: "WORKER_ABSENCE",    route: "GJ-R16", capacity: 5 },
-  { id: "TK-601", lat: 26.912, lng: 75.787, state: "Rajasthan",   district: "Jaipur",        status: "COLLECTING",  waste: 2.2, worker: "Mahesh Meena",   contractor: "Rajasthan Eco",    lastUpdate: "11m ago", anomaly: false, route: "RJ-R05", capacity: 5 },
-  { id: "TK-701", lat: 22.572, lng: 88.363, state: "West Bengal", district: "Kolkata",       status: "AT_FACILITY", waste: 4.7, worker: "Subhas Das",     contractor: "Kolkata Clean",    lastUpdate: "22m ago", anomaly: false, route: "WB-R03", capacity: 5 },
-  { id: "TK-801", lat: 17.385, lng: 78.487, state: "Telangana",   district: "Hyderabad",     status: "IN_TRANSIT",  waste: 3.3, worker: "Raju Yadav",     contractor: "Hyderabad Env",    lastUpdate: "8m ago",  anomaly: false, route: "TS-R06", capacity: 5 },
-];
+function generateTrucks() {
+  const regions = [
+    {
+      state: "Maharashtra",
+      coords: [
+        [19.07,72.87], // Mumbai
+        [18.52,73.85], // Pune
+        [19.99,73.78], // Nashik
+        [21.15,79.08], // Nagpur
+        [19.87,75.34], // Aurangabad
+      ]
+    },
+    {
+      state: "Delhi",
+      coords: [
+        [28.64,77.21],
+        [28.70,77.10],
+        [28.55,77.30]
+      ]
+    },
+    {
+      state: "Karnataka",
+      coords: [
+        [12.97,77.59],
+        [15.36,75.12],
+        [12.30,76.65]
+      ]
+    },
+    {
+      state: "Tamil Nadu",
+      coords: [
+        [13.08,80.27],
+        [11.01,76.96],
+        [10.79,78.70]
+      ]
+    },
+    {
+      state: "Gujarat",
+      coords: [
+        [23.02,72.57],
+        [21.17,72.83],
+        [22.30,70.80]
+      ]
+    },
+    {
+      state: "Rajasthan",
+      coords: [
+        [26.91,75.78],
+        [26.23,73.02],
+        [24.58,73.68]
+      ]
+    },
+    {
+      state: "West Bengal",
+      coords: [
+        [22.57,88.36],
+        [26.72,88.43]
+      ]
+    },
+    {
+      state: "Telangana",
+      coords: [
+        [17.38,78.48],
+        [18.67,78.10]
+      ]
+    }
+  ];
+
+  const trucks = [];
+
+  regions.forEach((region, rIdx) => {
+    region.coords.forEach((coord, cIdx) => {
+
+      for (let i = 0; i < 12; i++) { // ~150–200 trucks total
+        trucks.push({
+          id: `TK-${rIdx}${cIdx}${i}`,
+          state: region.state,
+          district: `Zone ${cIdx}`,
+
+          // realistic spread
+          lat: coord[0] + (Math.random() - 0.5) * 0.25,
+          lng: coord[1] + (Math.random() - 0.5) * 0.25,
+
+          status: ["COLLECTING","IN_TRANSIT","AT_FACILITY","IDLE"][Math.floor(Math.random()*4)],
+          waste: +(Math.random()*5).toFixed(1),
+          worker: "Worker " + i,
+          contractor: "Contractor " + rIdx,
+          lastUpdate: Math.floor(Math.random()*10) + "m ago",
+          anomaly: Math.random() < 0.12,
+          route: "R-" + i,
+          capacity: 5
+        });
+      }
+
+    });
+  });
+
+  return trucks;
+}
+
+const TRUCKS = generateTrucks();
 
 const STATUS_CONFIG = {
   COLLECTING:   { color: "#22c55e", label: "Collecting",  bg: "rgba(34,197,94,0.15)"   },
