@@ -6,7 +6,7 @@ import NotificationBell from "../../components/shared/NotificationBell";
 const navItems = [
   { to: "/citizen",                    label: "Home",       icon: "🏠", end: true },
   { to: "/citizen/report",             label: "Report",     icon: "📦" },
-  { to: "/citizen/segregation-check",  label: "Seg Check",  icon: "♻️" },
+  { to: "/citizen/segregation",  label: "Seg Check",  icon: "♻️" },
   { to: "/citizen/complaints",         label: "Complaints", icon: "📋" },
   { to: "/citizen/profile",            label: "Profile",    icon: "👤" },
   {to:"/", label:"Back to Landing", icon:"🏁"}
